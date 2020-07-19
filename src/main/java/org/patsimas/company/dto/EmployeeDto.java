@@ -3,6 +3,7 @@ package org.patsimas.company.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,4 +23,5 @@ public class EmployeeDto {
 
     private SupervisorDto supervisor;
 
+    private List<AttributeDto> attributes;
 }

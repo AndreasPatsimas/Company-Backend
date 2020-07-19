@@ -5,6 +5,7 @@ import org.patsimas.company.domain.Attribute;
 import org.patsimas.company.dto.AttributeDto;
 import org.patsimas.company.exceptions.ResourceNotFoundException;
 import org.patsimas.company.repositories.AttributeRepository;
+import org.patsimas.company.repositories.EmployeeAttributeRepository;
 import org.patsimas.company.utils.Generator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -22,11 +23,16 @@ public class AttributeServiceImpl implements AttributeService {
 
     private AttributeRepository attributeRepository;
 
+    private EmployeeAttributeRepository employeeAttributeRepository;
+
     private ConversionService conversionService;
 
     @Autowired
-    public AttributeServiceImpl(AttributeRepository attributeRepository, ConversionService conversionService) {
+    public AttributeServiceImpl(AttributeRepository attributeRepository,
+                                EmployeeAttributeRepository employeeAttributeRepository,
+                                ConversionService conversionService) {
         this.attributeRepository = attributeRepository;
+        this.employeeAttributeRepository = employeeAttributeRepository;
         this.conversionService = conversionService;
     }
 
@@ -99,7 +105,15 @@ public class AttributeServiceImpl implements AttributeService {
 
         Optional<Attribute> attributeOptional = attributeRepository.findById(id);
 
-        attributeOptional.ifPresent(attribute -> attributeRepository.delete(attribute));
+        attributeOptional.ifPresent(attribute -> {
+
+            List<String> attributeList = employeeAttributeRepository.findAttributes(id);
+
+            if (!attributeList.isEmpty())
+                employeeAttributeRepository.deleteAttributeFromEmployees(id);
+
+            attributeRepository.delete(attribute);
+        });
 
         attributeOptional.orElseThrow(() -> new ResourceNotFoundException("Attribute to be deleted not exist"));
 

@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @Builder
@@ -33,4 +34,10 @@ public class Employee {
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "EMP_Supervisor")
     private Employee supervisor;
+
+    @ManyToMany(fetch= FetchType.EAGER)
+    @JoinTable(name = "EmployeeAttribute", joinColumns =
+    @JoinColumn(name = "EMPATTR_EmployeeID"), inverseJoinColumns = @JoinColumn(name = "EMPATTR_AttributeID")
+    )
+    private List<Attribute> attributes;
 }
