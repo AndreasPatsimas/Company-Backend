@@ -14,6 +14,10 @@ public class EmployeeDto {
 
     private String name;
 
+    private String address;
+
+    private boolean hasCar;
+
     private Instant dateOfHire;
 
     private SupervisorDto supervisor;

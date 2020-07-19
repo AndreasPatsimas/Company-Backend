@@ -15,6 +15,8 @@ public class EmployeeToEmployeeDtoConverter implements Converter<Employee, Emplo
         return EmployeeDto.builder()
                 .id(employee.getId())
                 .name(employee.getName())
+                .address(employee.getAddress())
+                .hasCar(employee.getHasCar() == 1)
                 .dateOfHire(employee.getDateOfHire())
                 .supervisor(!ObjectUtils.isEmpty(
                         employee.getSupervisor()) ? buildSuperVisor(employee.getSupervisor()) : null)

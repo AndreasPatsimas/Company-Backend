@@ -1,7 +1,6 @@
 package org.patsimas.company.domain;
 
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -21,6 +20,12 @@ public class Employee {
 
     @Column(name = "EMP_Name", nullable = false)
     private String name;
+
+    @Column(name = "EMP_Address", nullable = false)
+    private String address;
+
+    @Column(name = "EMP_Car", nullable = false)
+    private Short hasCar;
 
     @Column(name = "EMP_DateOfHire", nullable = false)
     private Instant dateOfHire;
