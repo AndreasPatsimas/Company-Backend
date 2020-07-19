@@ -95,7 +95,6 @@ public class AttributeServiceImpl implements AttributeService {
             Attribute savedAttribute = attributeRepository.save(attribute);
 
             log.info("Save new attribute[id: {}] end", savedAttribute.getId());
-
     }
 
     @Override

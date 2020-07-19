@@ -57,8 +57,7 @@ public class AttributeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    /* Deletes the attribute specified by te given id
-     *
+    /* Deletes the attribute specified by the given id
      *
      * @param id the attribute id
      */

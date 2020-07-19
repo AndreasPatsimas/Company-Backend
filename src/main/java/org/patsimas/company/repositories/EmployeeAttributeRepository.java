@@ -14,13 +14,23 @@ import java.util.List;
 @Repository
 public interface EmployeeAttributeRepository extends JpaRepository<EmployeeAttribute, EmployeeAttributeId> {
 
+    @Query(value = "select * from EmployeeAttribute where EMPATTR_AttributeID = :attributeId",
+            nativeQuery = true)
+    List<String> findAttributes(@Param("attributeId") String attributeId);
+
     @Transactional
     @Modifying
     @Query(value = "delete from EmployeeAttribute where EMPATTR_AttributeID = :attributeId",
             nativeQuery = true)
     void deleteAttributeFromEmployees(@Param("attributeId") String attributeId);
 
-    @Query(value = "select * from EmployeeAttribute where EMPATTR_AttributeID = :attributeId",
+    @Query(value = "select * from EmployeeAttribute where EMPATTR_EmployeeID = :employeeId",
             nativeQuery = true)
-    List<String> findAttributes(@Param("attributeId") String attributeId);
+    List<String> findEmployees(@Param("employeeId") String employeeId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from EmployeeAttribute where EMPATTR_EmployeeID = :employeeId",
+            nativeQuery = true)
+    void deleteEmployeeFromAttributes(@Param("employeeId") String employeeId);
 }

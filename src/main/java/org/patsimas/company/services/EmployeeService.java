@@ -9,4 +9,10 @@ import java.util.List;
 public interface EmployeeService {
 
     List<EmployeeDto> findAll();
+
+    EmployeeDto fetchEmployeeById(String id);
+
+    void save(EmployeeDto employeeDto);
+
+    void deleteEmployee(String id);
 }
