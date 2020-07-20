@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -27,6 +28,9 @@ public class Employee {
 
     @Column(name = "EMP_Car", nullable = false)
     private Short hasCar;
+
+    @Column(name = "EMP_DateOfBirth")
+    private LocalDate dateOfBirth;
 
     @Column(name = "EMP_DateOfHire", nullable = false)
     private Instant dateOfHire;

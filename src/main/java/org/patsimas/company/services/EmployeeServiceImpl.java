@@ -128,7 +128,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!subordinates.isEmpty())
             subordinates.forEach(subordinate -> {
 
-                subordinate.setSupervisor(null);
+                if (ObjectUtils.isEmpty(supervisor.getSupervisor()))
+                    subordinate.setSupervisor(null);
+                else
+                    subordinate.setSupervisor(supervisor.getSupervisor());
 
                 employeeRepository.save(subordinate);
             });

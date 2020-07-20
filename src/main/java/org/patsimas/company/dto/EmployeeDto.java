@@ -3,6 +3,7 @@ package org.patsimas.company.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -18,6 +19,8 @@ public class EmployeeDto {
     private String address;
 
     private boolean hasCar;
+
+    private LocalDate dateOfBirth;
 
     private Instant dateOfHire;
 

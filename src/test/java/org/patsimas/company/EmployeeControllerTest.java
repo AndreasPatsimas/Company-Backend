@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,6 +37,7 @@ public class EmployeeControllerTest extends BasicWiremockTest {
                 .name("Andreas")
                 .address("Agidos 8-10")
                 .hasCar(true)
+                .dateOfBirth(LocalDate.of(1993, 2, 16))
                 .dateOfHire(Instant.now())
                 .attributes(Arrays.asList(AttributeDto.builder()
                         .id("82FF24BB-0180-40F9-B68E-15799556A5C2")
@@ -68,7 +70,7 @@ public class EmployeeControllerTest extends BasicWiremockTest {
 
     @Test
     public void d_deleteEmployee() throws Exception {
-        this.mockMvc.perform(delete("/employees/{id}", EMPLOYEE_ID))
+        this.mockMvc.perform(delete("/employees/{id}", "8CEE7A83-A9EB-4170-B7E8-5D4F0440C074"))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

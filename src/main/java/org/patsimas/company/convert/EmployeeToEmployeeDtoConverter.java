@@ -22,6 +22,7 @@ public class EmployeeToEmployeeDtoConverter implements Converter<Employee, Emplo
                 .name(employee.getName())
                 .address(employee.getAddress())
                 .hasCar(employee.getHasCar() == 1)
+                .dateOfBirth(employee.getDateOfBirth())
                 .dateOfHire(employee.getDateOfHire())
                 .supervisor(!ObjectUtils.isEmpty(
                         employee.getSupervisor()) ? buildSuperVisor(employee.getSupervisor()) : null)
