@@ -3,6 +3,7 @@ package org.patsimas.company.services;
 import lombok.extern.slf4j.Slf4j;
 import org.patsimas.company.domain.Attribute;
 import org.patsimas.company.dto.AttributeDto;
+import org.patsimas.company.exceptions.ResourceAlreadyExistsException;
 import org.patsimas.company.exceptions.ResourceNotFoundException;
 import org.patsimas.company.repositories.AttributeRepository;
 import org.patsimas.company.repositories.EmployeeAttributeRepository;
@@ -79,9 +80,16 @@ public class AttributeServiceImpl implements AttributeService {
 
         log.info("Save new attribute start");
 
-        if (ObjectUtils.isEmpty(attributeDto)) {
+        if (ObjectUtils.isEmpty(attributeDto))
             throw new ResourceNotFoundException("Attribute to be saved is empty");
-        }
+
+
+        if (isAttributeAlreadyExists(attributeDto.getName(), attributeDto.getValue()))
+            throw new ResourceAlreadyExistsException(MessageFormat
+                    .format("Attribute with name {0} and value {0} already exists",
+                            attributeDto.getName(),
+                            attributeDto.getValue()));
+
         // insert a new attribute in case id is not provided
         if (attributeDto.getId() == null){
 
@@ -117,5 +125,15 @@ public class AttributeServiceImpl implements AttributeService {
         attributeOptional.orElseThrow(() -> new ResourceNotFoundException("Attribute to be deleted not exist"));
 
         log.info("Delete attribute process completed");
+    }
+
+    private boolean isAttributeAlreadyExists(String name, String value){
+
+        Optional<Attribute> attribute = attributeRepository.findByNameAndValue(name, value);
+
+        if (attribute.isPresent())
+            return true;
+
+        return false;
     }
 }

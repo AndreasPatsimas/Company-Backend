@@ -70,7 +70,7 @@ public class EmployeeControllerTest extends BasicWiremockTest {
 
     @Test
     public void d_deleteEmployee() throws Exception {
-        this.mockMvc.perform(delete("/employees/{id}", "8CEE7A83-A9EB-4170-B7E8-5D4F0440C074"))
+        this.mockMvc.perform(delete("/employees/{id}", EMPLOYEE_ID))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }
