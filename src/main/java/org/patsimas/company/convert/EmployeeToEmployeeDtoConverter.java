@@ -8,8 +8,10 @@ import org.patsimas.company.dto.SupervisorDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,15 +40,16 @@ public class EmployeeToEmployeeDtoConverter implements Converter<Employee, Emplo
                 .build();
     }
 
-    private List<AttributeDto> buildAttributes(List<Attribute> attributes){
+    private String buildAttributes(List<Attribute> attributes){
 
-        return attributes
-                .stream()
-                .map(attribute -> AttributeDto.builder()
-                        .id(attribute.getId())
-                        .name(attribute.getName())
-                        .value(attribute.getValue())
-                        .build())
-                .collect(Collectors.toList());
+        StringJoiner attributesFormat = new StringJoiner(", ");
+
+        if(!attributes.isEmpty())
+            attributes.forEach(attribute -> {
+                if(!StringUtils.isEmpty(attribute.getName()) && !StringUtils.isEmpty(attribute.getValue()))
+                    attributesFormat.add(attribute.getName() + ": " + attribute.getValue());
+            });
+
+        return attributesFormat.toString();
     }
 }

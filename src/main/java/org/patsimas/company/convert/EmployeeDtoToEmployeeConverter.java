@@ -24,7 +24,6 @@ public class EmployeeDtoToEmployeeConverter implements Converter<EmployeeDto, Em
                 .hasCar(employeeDto.isHasCar() ? (short) 1 : (short) 0)
                 .dateOfBirth(employeeDto.getDateOfBirth())
                 .dateOfHire(employeeDto.getDateOfHire())
-                .attributes(buildAttributes(employeeDto.getAttributes()))
                 .build();
     }
 
