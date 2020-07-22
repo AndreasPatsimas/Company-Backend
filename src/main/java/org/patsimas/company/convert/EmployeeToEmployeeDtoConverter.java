@@ -29,6 +29,7 @@ public class EmployeeToEmployeeDtoConverter implements Converter<Employee, Emplo
                 .supervisor(!ObjectUtils.isEmpty(
                         employee.getSupervisor()) ? buildSuperVisor(employee.getSupervisor()) : null)
                 .attributes(buildAttributes(employee.getAttributes()))
+                .attributesFormat(buildAttributesInFormat(employee.getAttributes()))
                 .build();
     }
 
@@ -40,7 +41,7 @@ public class EmployeeToEmployeeDtoConverter implements Converter<Employee, Emplo
                 .build();
     }
 
-    private String buildAttributes(List<Attribute> attributes){
+    private String buildAttributesInFormat(List<Attribute> attributes){
 
         StringJoiner attributesFormat = new StringJoiner(", ");
 
@@ -51,5 +52,17 @@ public class EmployeeToEmployeeDtoConverter implements Converter<Employee, Emplo
             });
 
         return attributesFormat.toString();
+    }
+
+    private List<AttributeDto> buildAttributes(List<Attribute> attributes){
+
+        return attributes
+                .stream()
+                .map(attribute -> AttributeDto.builder()
+                        .id(attribute.getId())
+                        .name(attribute.getName())
+                        .value(attribute.getValue())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

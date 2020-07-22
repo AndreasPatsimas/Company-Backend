@@ -26,5 +26,7 @@ public class EmployeeDto {
 
     private SupervisorDto supervisor;
 
-    private String attributes;
+    private List<AttributeDto> attributes;
+
+    private String attributesFormat;
 }

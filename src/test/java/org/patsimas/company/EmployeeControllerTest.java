@@ -38,10 +38,9 @@ public class EmployeeControllerTest extends BasicWiremockTest {
                 .address("Agidos 8-10")
                 .hasCar(true)
                 .dateOfBirth(LocalDate.of(1993, 2, 16))
-                .dateOfHire(Instant.now())
-//                .attributes(Arrays.asList(AttributeDto.builder()
-//                        .id("82FF24BB-0180-40F9-B68E-15799556A5C2")
-//                        .build()))
+                .attributes(Arrays.asList(AttributeDto.builder()
+                        .id("82FF24BB-0180-40F9-B68E-15799556A5C2")
+                        .build()))
                 .build();
 
         this.mockMvc.perform(post("/employees")

@@ -8,6 +8,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +24,8 @@ public class EmployeeDtoToEmployeeConverter implements Converter<EmployeeDto, Em
                 .address(employeeDto.getAddress())
                 .hasCar(employeeDto.isHasCar() ? (short) 1 : (short) 0)
                 .dateOfBirth(employeeDto.getDateOfBirth())
-                .dateOfHire(employeeDto.getDateOfHire())
+                .dateOfHire(Instant.now())
+                .attributes(buildAttributes(employeeDto.getAttributes()))
                 .build();
     }
 
