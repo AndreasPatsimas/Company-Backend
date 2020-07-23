@@ -1,5 +1,7 @@
 package org.patsimas.company.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 
 import java.time.Instant;
@@ -20,6 +22,7 @@ public class EmployeeDto {
 
     private boolean hasCar;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private LocalDate dateOfBirth;
 
     private Instant dateOfHire;

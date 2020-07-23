@@ -82,15 +82,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (ObjectUtils.isEmpty(employeeDto)) {
             throw new ResourceNotFoundException("Employee to be saved is empty");
         }
+
+        Employee employee;
+
         // insert a new employee in case id is not provided
-        if (employeeDto.getId() == null){
+        if (employeeDto.getId() == null)
+            employee = insertEmployee(employeeDto);
+        else
+            employee = editEmployee(employeeDto);
 
-            String id = Generator.generateId();
 
-            employeeDto.setId(id);
-        }
-
-        Employee employee = conversionService.convert(employeeDto, Employee.class);
 
         Employee savedEmployee = employeeRepository.save(employee);
 
@@ -119,6 +120,33 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeOptional.orElseThrow(() -> new ResourceNotFoundException("Employee to be deleted not exist"));
 
         log.info("Delete attribute process completed");
+    }
+
+    private Employee insertEmployee(EmployeeDto employeeDto){
+
+        String id = Generator.generateId();
+
+        employeeDto.setId(id);
+
+        Employee employee = conversionService.convert(employeeDto, Employee.class);
+
+        return employee;
+    }
+
+    private Employee editEmployee(EmployeeDto employeeDto){
+
+        Optional<Employee> employee = employeeRepository.findById(employeeDto.getId());
+
+        if (!employee.isPresent())
+            throw new ResourceNotFoundException(MessageFormat
+                    .format("Employee [id: {0}] does not exist", employeeDto.getId()));
+
+        employee.get().setName(employeeDto.getName());
+        employee.get().setAddress(employeeDto.getAddress());
+        employee.get().setHasCar(employeeDto.isHasCar() ? (short) 1 : (short) 0);
+        employee.get().setDateOfBirth(employeeDto.getDateOfBirth());
+
+        return employee.get();
     }
 
     private void clearSubordinatesBySupervisor(Employee supervisor){
