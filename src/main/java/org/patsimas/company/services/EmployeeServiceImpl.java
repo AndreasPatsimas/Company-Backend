@@ -1,6 +1,7 @@
 package org.patsimas.company.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.patsimas.company.domain.Attribute;
 import org.patsimas.company.domain.Employee;
 import org.patsimas.company.dto.EmployeeDto;
 import org.patsimas.company.exceptions.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -141,10 +143,23 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new ResourceNotFoundException(MessageFormat
                     .format("Employee [id: {0}] does not exist", employeeDto.getId()));
 
+        List<Attribute> attributes;
+
         employee.get().setName(employeeDto.getName());
         employee.get().setAddress(employeeDto.getAddress());
         employee.get().setHasCar(employeeDto.isHasCar() ? (short) 1 : (short) 0);
         employee.get().setDateOfBirth(employeeDto.getDateOfBirth());
+
+        if(!ObjectUtils.isEmpty(employeeDto.getAttributes()) && !employeeDto.getAttributes().isEmpty()){
+
+            attributes = employeeDto.getAttributes()
+                    .stream()
+                    .map(attribute -> conversionService.convert(attribute, Attribute.class))
+                    .collect(Collectors.toList());
+
+            employee.get().setAttributes(attributes);
+        }
+
 
         return employee.get();
     }
