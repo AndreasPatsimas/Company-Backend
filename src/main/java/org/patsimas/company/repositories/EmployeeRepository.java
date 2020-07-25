@@ -1,5 +1,6 @@
 package org.patsimas.company.repositories;
 
+import org.patsimas.company.domain.Attribute;
 import org.patsimas.company.domain.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,4 +11,6 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     List<Employee> findEmployeeBySupervisor(Employee supervisor);
+
+    List<Employee> findEmployeesByAttributesIn(List<Attribute> attributes);
 }

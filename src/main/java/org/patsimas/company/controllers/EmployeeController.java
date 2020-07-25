@@ -1,6 +1,7 @@
 package org.patsimas.company.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.patsimas.company.dto.AttributeDto;
 import org.patsimas.company.dto.EmployeeDto;
 import org.patsimas.company.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,23 @@ public class EmployeeController {
         log.info("Fetch all employees");
 
         return employeeService.findAll();
+    }
+
+    /**
+     * Retrieves employees specified by given attributes
+     *
+     * @param attributeDtoList the employees attributeDtoList
+     * @return the employees specified by given list of attributes
+     *
+     */
+    @PostMapping(value = "/attributes",
+                 consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+                 produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    List<EmployeeDto> findEmployeesByAttributes(@RequestBody List<AttributeDto> attributeDtoList) {
+
+        log.info("Fetch employees by their attributes");
+
+        return employeeService.findEmployeeByAttributes(attributeDtoList);
     }
 
     /**

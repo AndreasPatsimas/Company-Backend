@@ -3,6 +3,7 @@ package org.patsimas.company.services;
 import lombok.extern.slf4j.Slf4j;
 import org.patsimas.company.domain.Attribute;
 import org.patsimas.company.domain.Employee;
+import org.patsimas.company.dto.AttributeDto;
 import org.patsimas.company.dto.EmployeeDto;
 import org.patsimas.company.exceptions.ResourceNotFoundException;
 import org.patsimas.company.repositories.EmployeeAttributeRepository;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,6 +56,36 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<EmployeeDto> findEmployeeByAttributes(List<AttributeDto> attributeDtoList) {
+
+        log.info("Find employees by their attributes process start");
+
+        List<EmployeeDto> employeeDtoList = null;
+
+        if (!ObjectUtils.isEmpty(attributeDtoList) && !attributeDtoList.isEmpty()){
+
+        List<Attribute> attributes = attributeDtoList
+                .stream()
+                .map(attributeDto -> conversionService.convert(attributeDto, Attribute.class))
+                .collect(Collectors.toList());
+
+        List<Employee> employees = employeeRepository.findEmployeesByAttributesIn(attributes);
+
+        employeeDtoList = employees
+                .stream()
+                .map(employee -> conversionService.convert(employee, EmployeeDto.class))
+                .collect(Collectors.toList());
+
+        }
+        else
+            throw new RuntimeException("No Attributes given");
+
+        log.info("Find employees by their attributes process end");
+
+        return employeeDtoList;
+    }
+
+    @Override
     public EmployeeDto fetchEmployeeById(String id) {
 
         log.info("Fetch employee[id: {}] start", id);
@@ -88,12 +118,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee;
 
         // insert a new employee in case id is not provided
-        if (employeeDto.getId() == null)
+        if (employeeDto.getId() == null || !employeeExists(employeeDto.getId()))
             employee = insertEmployee(employeeDto);
         else
             employee = editEmployee(employeeDto);
-
-
 
         Employee savedEmployee = employeeRepository.save(employee);
 
@@ -126,9 +154,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private Employee insertEmployee(EmployeeDto employeeDto){
 
-        String id = Generator.generateId();
+        if (employeeDto.getId() == null){
 
-        employeeDto.setId(id);
+            String id = Generator.generateId();
+
+            employeeDto.setId(id);
+        }
 
         Employee employee = conversionService.convert(employeeDto, Employee.class);
 
@@ -162,6 +193,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
         return employee.get();
+    }
+
+    private boolean employeeExists(String id){
+
+        Optional<Employee> employee = employeeRepository.findById(id);
+
+        if (employee.isPresent())
+            return true;
+
+        return false;
     }
 
     private void clearSubordinatesBySupervisor(Employee supervisor){

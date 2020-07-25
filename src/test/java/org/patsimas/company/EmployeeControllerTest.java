@@ -12,9 +12,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -59,7 +59,25 @@ public class EmployeeControllerTest extends BasicWiremockTest {
     }
 
     @Test
-    public void c_findEmployeeById() throws Exception {
+    public void c_findEmployeesByAttributes() throws Exception {
+
+        List<AttributeDto> attributeDtoList = Arrays.asList(
+                AttributeDto.builder()
+                    .id("82FF24BB-0180-40F9-B68E-15799556A5C2")
+                    .build(),
+                AttributeDto.builder()
+                    .id("F27B9C58-FD9E-4EB1-9B09-E01FF7032CC8")
+                    .build()
+        );
+
+        this.mockMvc.perform(post("/employees/attributes")
+                .content(asJsonString(attributeDtoList)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void d_findEmployeeById() throws Exception {
         this.mockMvc.perform(get("/employees/{id}", EMPLOYEE_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -68,7 +86,7 @@ public class EmployeeControllerTest extends BasicWiremockTest {
     }
 
     @Test
-    public void d_deleteEmployee() throws Exception {
+    public void e_deleteEmployee() throws Exception {
         this.mockMvc.perform(delete("/employees/{id}", EMPLOYEE_ID))
                 .andExpect(status().isNoContent())
                 .andDo(print());
