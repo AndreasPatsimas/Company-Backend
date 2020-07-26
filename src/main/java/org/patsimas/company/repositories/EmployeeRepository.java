@@ -12,5 +12,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     List<Employee> findEmployeeBySupervisor(Employee supervisor);
 
-    List<Employee> findEmployeesByAttributesIn(List<Attribute> attributes);
+    List<Employee> findDistinctEmployeesByAttributesIn(List<Attribute> attributes);
 }

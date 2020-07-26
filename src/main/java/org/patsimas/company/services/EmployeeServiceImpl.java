@@ -69,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .map(attributeDto -> conversionService.convert(attributeDto, Attribute.class))
                 .collect(Collectors.toList());
 
-        List<Employee> employees = employeeRepository.findEmployeesByAttributesIn(attributes);
+        List<Employee> employees = employeeRepository.findDistinctEmployeesByAttributesIn(attributes);
 
         employeeDtoList = employees
                 .stream()
