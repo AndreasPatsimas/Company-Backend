@@ -39,7 +39,7 @@ public class Employee {
     @JoinColumn(name = "EMP_Supervisor")
     private Employee supervisor;
 
-    @ManyToMany(fetch= FetchType.EAGER)
+    @ManyToMany(fetch= FetchType.LAZY)
     @JoinTable(name = "EmployeeAttribute", joinColumns =
     @JoinColumn(name = "EMPATTR_EmployeeID"), inverseJoinColumns = @JoinColumn(name = "EMPATTR_AttributeID")
     )
